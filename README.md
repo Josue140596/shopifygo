@@ -1,8 +1,13 @@
 # ShopifyGo :rabbit:
 
-## Developing My First Microservice in Go
 
-### Structure
+## Schema DB
+
+[![SchemaShopifyGo](./assets/SchemaShopifyGo.png)](./assets/SchemaShopifyGo.png "Open image")
+
+---
+
+### Structure 
 
 ```bash
 shopifygo/
@@ -68,3 +73,5 @@ shopifygo/
 │
 └── README.md
 ```
+
+
