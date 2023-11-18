@@ -23,6 +23,6 @@ sqlc:
 test: 
 	go test -v -cover ./...
 serve: 
-	go run main.go
+	go run ./cmd/user-service/main.go
 
 .PHONY: postgres createdb dropdb migrateup sqlc serve test docker-up docker-down docker-start docker-restart docker-stop db-shell containerDB migratedown
