@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Josue140596/shopifygo/pkg/database/models"
 	"gorm.io/gorm"
@@ -36,4 +37,16 @@ func (ur *UserRepository) CreateUser(arg CreateUserParams) error {
 	}
 
 	return nil
+}
+
+// Get user by ID
+func (ur *UserRepository) GetUserById(id uint) (models.User, error) {
+	var user = models.User{}
+	result := ur.db.First(&user, id)
+	// SELECT * FROM users WHERE id = 10;
+	if result.Error != nil {
+		fmt.Println("failed to get user: " + result.Error.Error())
+	}
+
+	return user, nil
 }
