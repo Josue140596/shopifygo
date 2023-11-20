@@ -17,6 +17,12 @@ func main() {
 	// 	Password: "123456",
 	// 	Address:  "Street 1",
 	// })
-	user, _ := UserRepository.GetUserById(1)
+	// user, _ := UserRepository.GetUserById(1)
+	userToUpdate := user.UpdateUserInformationParams{
+		UserID:   2,
+		Username: "DIOS",
+		Address:  "Hidalgo",
+	}
+	user, _ := UserRepository.UpdateUserInformation(userToUpdate)
 	fmt.Println(user)
 }

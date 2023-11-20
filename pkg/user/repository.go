@@ -50,3 +50,32 @@ func (ur *UserRepository) GetUserById(id uint) (models.User, error) {
 
 	return user, nil
 }
+
+type UpdateUserInformationParams struct {
+	UserID   uint
+	Username string
+	Address  string
+}
+
+// Update user
+func (ur *UserRepository) UpdateUserInformation(arg UpdateUserInformationParams) (models.User, error) {
+	var user models.User
+	updateData := map[string]interface{}{
+		"Username": arg.Username,
+		"Address":  arg.Address,
+	}
+	// UPDATE users SET Username=?, Address=? WHERE user_id = ?;
+	result := ur.db.Model(&user).Where("user_id = ?", arg.UserID).Updates(updateData)
+	if result.Error != nil {
+		fmt.Println("failed to update user: " + result.Error.Error())
+		return user, result.Error
+	}
+	if result.RowsAffected == 0 {
+		fmt.Println("user not found")
+		return user, errors.New("user not found")
+	}
+	updatedUser := models.User{}
+	ur.db.First(&updatedUser, "user_id = ?", arg.UserID)
+
+	return updatedUser, nil
+}
