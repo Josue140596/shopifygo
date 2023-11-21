@@ -47,9 +47,7 @@ shopifygo/
 │   │   ├── order_migration/   
 │   │   │   ├── 001_initial_schema.up.sql
 │   │   │   └── ...
-│   │   ├── connection.go 
-│   │   ├── queries.go  
-│   │   └── models.go 
+│   │   └── connection.go
 │   │
 │   ├── user/
 │   │   ├── user_manager.go      
@@ -73,5 +71,3 @@ shopifygo/
 │
 └── README.md
 ```
-
-
