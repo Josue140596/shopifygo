@@ -79,3 +79,20 @@ func (ur *UserRepository) UpdateUserInformation(arg UpdateUserInformationParams)
 
 	return updatedUser, nil
 }
+
+// Delete user
+func (ur *UserRepository) DeleteUser(id uint) error {
+	var user models.User
+	// DELETE FROM users WHERE user_id = ?;
+	result := ur.db.Delete(&user, id)
+	if result.Error != nil {
+		fmt.Println("failed to delete user: " + result.Error.Error())
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		fmt.Println("user not found")
+		return errors.New("user not found")
+	}
+
+	return nil
+}

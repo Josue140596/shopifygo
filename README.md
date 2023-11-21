@@ -71,5 +71,3 @@ shopifygo/
 │
 └── README.md
 ```
-
-
