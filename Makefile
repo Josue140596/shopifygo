@@ -18,11 +18,9 @@ migrateup:
 	migrate -path internal/db/general_migration -database "postgres://root:secret@localhost:5432/shopify_db?sslmode=disable" -verbose up
 migratedown:
 	migrate -path internal/db/general_migration -database "postgres://root:secret@localhost:5432/shopify_db?sslmode=disable" -verbose down
-sqlc: 
-	sqlc generate
 test: 
 	go test -v -cover ./...
 serve: 
 	go run ./cmd/user-service/main.go
 
-.PHONY: postgres createdb dropdb migrateup sqlc serve test docker-up docker-down docker-start docker-restart docker-stop db-shell containerDB migratedown
+.PHONY: postgres createdb dropdb migrateup serve test docker-up docker-down docker-start docker-restart docker-stop db-shell containerDB migratedown
