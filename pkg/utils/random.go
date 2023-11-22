@@ -76,7 +76,7 @@ func RandomEmailDomainNames() string {
 }
 
 func RandomEmail() string {
-	return RandomNames() + strconv.Itoa(RandomNumber(1000)) + RandomEmailDomainNames()
+	return RandomNames() + strconv.Itoa(RandomNumber(1000)) + "@" + RandomEmailDomainNames()
 }
 
 func RandomPassword() string {

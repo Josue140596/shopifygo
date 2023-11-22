@@ -25,12 +25,9 @@ type CreateUserParams struct {
 }
 
 // Create a new user
-func (ur *UserRepository) CreateUser(arg CreateUserParams) error {
-	pass, err := utils.CryptPassword(arg.Password)
+func (ur *UserRepository) CreateUser(arg CreateUserParams) (models.User, error) {
+	pass, _ := utils.CryptPassword(arg.Password)
 
-	if err != nil {
-		return errors.New("failed to hash password: " + err.Error())
-	}
 	newUser := models.User{
 		Username: arg.Username,
 		Email:    arg.Email,
@@ -40,11 +37,10 @@ func (ur *UserRepository) CreateUser(arg CreateUserParams) error {
 
 	result := ur.db.Create(&newUser)
 	if result.Error != nil {
-		return errors.New("failed to create user: " + result.Error.Error())
+		return newUser, errors.New("failed to create user: " + result.Error.Error())
 	}
-	//TODO: use Scan to get the user ID
-
-	return nil
+	result.Scan(&newUser)
+	return newUser, nil
 }
 
 // Get user by ID
@@ -54,8 +50,9 @@ func (ur *UserRepository) GetUserById(id uint) (models.User, error) {
 	// SELECT * FROM users WHERE id = 10;
 	if result.Error != nil {
 		fmt.Println("failed to get user: " + result.Error.Error())
+		return user, result.Error
 	}
-
+	result.Scan(&user)
 	return user, nil
 }
 
@@ -82,10 +79,8 @@ func (ur *UserRepository) UpdateUserInformation(arg UpdateUserInformationParams)
 		fmt.Println("user not found")
 		return user, errors.New("user not found")
 	}
-	updatedUser := models.User{}
-	ur.db.First(&updatedUser, "user_id = ?", arg.UserID)
-
-	return updatedUser, nil
+	result.Scan(&user)
+	return user, nil
 }
 
 // Delete user
