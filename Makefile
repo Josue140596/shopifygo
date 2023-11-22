@@ -14,6 +14,8 @@ db-shell:
 	docker-compose exec db psql -U root shopify_db
 dropdb:
 	docker exec -it postgresShopify dropdb shopify_db
+migrateCreate:
+	migrate create -ext sql -dir internal/db/general_migration $(name)
 migrateup:
 	migrate -path internal/db/general_migration -database "postgres://root:secret@localhost:5432/shopify_db?sslmode=disable" -verbose up
 migratedown:

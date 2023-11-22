@@ -4,10 +4,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/Josue140596/shopifygo/internal/db"
 	"github.com/Josue140596/shopifygo/pkg/user"
+	"github.com/Josue140596/shopifygo/pkg/utils"
+	"github.com/stretchr/testify/require"
 )
 
 var userRepo *user.UserRepository
@@ -21,12 +21,20 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
-func TestCreateUser(t *testing.T) {
-	error := userRepo.CreateUser(user.CreateUserParams{
-		Username: "Josue",
-		Email:    "testmain2@gmail.com",
-		Password: "123456",
-		Address:  "Calle miguel hidalgo manzana 1 lote 1",
+func createUserRandom(t *testing.T) {
+	name := utils.RandomNames()
+	email := utils.RandomEmail()
+	address := utils.RandomAddress()
+	password := utils.RandomPassword()
+	err := userRepo.CreateUser(user.CreateUserParams{
+		Username: name,
+		Email:    email,
+		Password: password,
+		Address:  address,
 	})
-	require.NoError(t, error)
+	require.NoError(t, err)
+}
+
+func TestCreateUser(t *testing.T) {
+	createUserRandom(t)
 }

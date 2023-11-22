@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/Josue140596/shopifygo/pkg/database/models"
+	"github.com/Josue140596/shopifygo/pkg/utils"
 	"gorm.io/gorm"
 )
 
@@ -25,16 +26,23 @@ type CreateUserParams struct {
 
 // Create a new user
 func (ur *UserRepository) CreateUser(arg CreateUserParams) error {
+	pass, err := utils.CryptPassword(arg.Password)
+
+	if err != nil {
+		return errors.New("failed to hash password: " + err.Error())
+	}
 	newUser := models.User{
 		Username: arg.Username,
 		Email:    arg.Email,
-		Password: arg.Password,
+		Password: pass,
 		Address:  arg.Address,
 	}
+
 	result := ur.db.Create(&newUser)
 	if result.Error != nil {
-		return errors.New("failed to create user: : " + result.Error.Error())
+		return errors.New("failed to create user: " + result.Error.Error())
 	}
+	//TODO: use Scan to get the user ID
 
 	return nil
 }
