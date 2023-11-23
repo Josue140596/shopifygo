@@ -1,6 +1,7 @@
 package user_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -14,7 +15,12 @@ import (
 var userRepo *user.UserRepository
 
 func TestMain(m *testing.M) {
-	db := db.NewConnection("host=localhost port=5432 user=root password=secret dbname=shopify_db sslmode=disable")
+	envConf, errorConfig := utils.LoadConfig("../../configs/")
+	if errorConfig != nil {
+		panic(fmt.Errorf("fatal error config file: %w", errorConfig))
+	}
+	dsn := utils.GenerateDSN(&envConf)
+	db := db.NewConnection(dsn)
 	userRepo = user.NewUserRepository(db)
 
 	exitVal := m.Run()
