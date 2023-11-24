@@ -68,6 +68,13 @@ shopifygo/
 │   ├── product_config.yaml  
 │   ├── order_config.yaml    
 │   └── ...
+├── server/
+│   ├── server.go
+│   └── ...
+├── collections/
+|   ├── collection_Shopify.json
+│   └── ...
+│
 │
 └── README.md
 ```
