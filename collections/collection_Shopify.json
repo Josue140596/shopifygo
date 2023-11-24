@@ -1,0 +1,34 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Shopify",
+    "dateExported": "2023-11-24T00:09:57.757Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "249b4d66-71a9-4acf-b3b2-325306260044",
+            "name": "user",
+            "containerId": "",
+            "created": "2023-11-23T23:55:43.674Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "013f475f-a321-4683-bca1-ec4082383d21",
+            "colId": "814bb519-f436-474a-9ab2-50f5545f9dd0",
+            "containerId": "249b4d66-71a9-4acf-b3b2-325306260044",
+            "name": "create",
+            "url": "{{HOST}}{{SERVER_ADDRESS}}",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-23T23:56:00.307Z",
+            "modified": "2023-11-24T00:02:47.953Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ],
+    "settings": {
+        "envId": "67a6e17b-3330-45a4-a23f-6ebcfe83d390"
+    }
+}
