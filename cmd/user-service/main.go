@@ -18,5 +18,10 @@ func main() {
 	// Create repository (Queries)
 	UserRepository := user.NewUserRepository(dbConn)
 	// Create server
-	server.NewServer(UserRepository).StartServer(config.ServerAddress)
+	srv := server.NewServer(UserRepository)
+	// Router
+	route := srv.Router()
+	user.NewRouterUser(UserRepository, route).SetupRouter()
+	// Start server
+	srv.StartServer(config.ServerAddress)
 }

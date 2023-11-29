@@ -37,10 +37,10 @@ func (ur *UserRepository) CreateUser(arg CreateUserParams) (models.User, error) 
 
 	result := ur.db.Create(&newUser)
 	if result.Error != nil {
-		return newUser, errors.New("failed to create user: " + result.Error.Error())
+		return newUser, result.Error
 	}
 	result.Scan(&newUser)
-	return newUser, nil
+	return newUser, result.Error
 }
 
 // Get user by ID
@@ -53,7 +53,7 @@ func (ur *UserRepository) GetUserById(id uint) (models.User, error) {
 		return user, result.Error
 	}
 	result.Scan(&user)
-	return user, nil
+	return user, result.Error
 }
 
 type UpdateUserInformationParams struct {
@@ -73,10 +73,9 @@ func (ur *UserRepository) UpdateUserInformation(arg UpdateUserInformationParams)
 	result := ur.db.Model(&user).Where("user_id = ?", arg.UserID).Updates(updateData)
 	if result.Error != nil {
 		fmt.Println("failed to update user: " + result.Error.Error())
-		return user, result.Error
+		return user, errors.New("user not found")
 	}
 	if result.RowsAffected == 0 {
-		fmt.Println("user not found")
 		return user, errors.New("user not found")
 	}
 	result.Scan(&user)
@@ -93,7 +92,6 @@ func (ur *UserRepository) DeleteUser(id uint) error {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
-		fmt.Println("user not found")
 		return errors.New("user not found")
 	}
 
