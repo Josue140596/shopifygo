@@ -14,9 +14,8 @@ type CreateUserRequest struct {
 	Address  string `json:"address" binding:"required,min=8"`
 }
 
-
 func (server *Router) createUser(c *gin.Context) {
-	 var req CreateUserRequest
+	var req CreateUserRequest
 	// Validations
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, errorResponse(err))
@@ -40,20 +39,19 @@ func (server *Router) createUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
 }
 
-
 type getUserRequest struct {
 	ID uint `uri:"id" binding:"required,min=1"`
 }
 
 type UserInformationRes struct {
-    UserID    uint   
-	Username  string 
-	Email     string 
-	Address   string 
+	UserID    uint
+	Username  string
+	Email     string
+	Address   string
 	CreatedAt time.Time
 }
 
-func (server *Router) geUserById(c *gin.Context){
+func (server *Router) geUserById(c *gin.Context) {
 	var req getUserRequest
 	// Validations
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,12 +66,39 @@ func (server *Router) geUserById(c *gin.Context){
 	}
 	//Clean response
 	res := UserInformationRes{
-		UserID: user.UserID,
-		Username: user.Username,
-		Email: user.Email,
-		Address: user.Address,
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Email:     user.Email,
+		Address:   user.Address,
 		CreatedAt: user.CreatedAt,
 	}
 
-	c.JSON(http.StatusOK,res)
+	c.JSON(http.StatusOK, res)
+}
+
+type UpdateUserInformationReq struct {
+	UserID   uint   `json:"id" binding:"required,min=1"`
+	Username string `json:"username" binding:"required,min=1"`
+	Address  string `json:"address" binding:"required,min=8"`
+}
+
+func (s *Router) updateUser(c *gin.Context) {
+	var req UpdateUserInformationReq
+	// Validations
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := UpdateUserInformationParams{
+		UserID:   req.UserID,
+		Username: req.Username,
+		Address:  req.Address,
+	}
+	user, err := s.db.UpdateUserInformation(arg)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }

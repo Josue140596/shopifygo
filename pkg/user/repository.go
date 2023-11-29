@@ -73,10 +73,9 @@ func (ur *UserRepository) UpdateUserInformation(arg UpdateUserInformationParams)
 	result := ur.db.Model(&user).Where("user_id = ?", arg.UserID).Updates(updateData)
 	if result.Error != nil {
 		fmt.Println("failed to update user: " + result.Error.Error())
-		return user, result.Error
+		return user, errors.New("user not found")
 	}
 	if result.RowsAffected == 0 {
-		fmt.Println("user not found")
 		return user, errors.New("user not found")
 	}
 	result.Scan(&user)

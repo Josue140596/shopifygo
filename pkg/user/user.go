@@ -19,6 +19,7 @@ func (r *Router) SetupRouter() {
 	{
 		userGroup.POST("/create", r.createUser)
 		userGroup.GET("/:id", r.geUserById)
+		userGroup.POST("/update", r.updateUser)
 	}
 }
 
