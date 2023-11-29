@@ -92,7 +92,6 @@ func (ur *UserRepository) DeleteUser(id uint) error {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
-		fmt.Println("user not found")
 		return errors.New("user not found")
 	}
 

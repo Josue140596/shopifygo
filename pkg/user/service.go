@@ -102,3 +102,23 @@ func (s *Router) updateUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
+
+type deleteUserRequest struct {
+	ID uint `uri:"id" binding:"required,min=1"`
+}
+
+func (s *Router) deleteUser(c *gin.Context) {
+	var req deleteUserRequest
+	// Validations
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	// Get Data
+	err := s.db.DeleteUser(req.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+}
