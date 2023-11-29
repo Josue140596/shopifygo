@@ -2,6 +2,7 @@ package user
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,4 +38,42 @@ func (server *Router) createUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+}
+
+
+type getUserRequest struct {
+	ID uint `uri:"id" binding:"required,min=1"`
+}
+
+type UserInformationRes struct {
+    UserID    uint   
+	Username  string 
+	Email     string 
+	Address   string 
+	CreatedAt time.Time
+}
+
+func (server *Router) geUserById(c *gin.Context){
+	var req getUserRequest
+	// Validations
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	// Get Data
+	user, err := server.db.GetUserById(req.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	//Clean response
+	res := UserInformationRes{
+		UserID: user.UserID,
+		Username: user.Username,
+		Email: user.Email,
+		Address: user.Address,
+		CreatedAt: user.CreatedAt,
+	}
+
+	c.JSON(http.StatusOK,res)
 }

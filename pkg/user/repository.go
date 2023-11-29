@@ -53,7 +53,7 @@ func (ur *UserRepository) GetUserById(id uint) (models.User, error) {
 		return user, result.Error
 	}
 	result.Scan(&user)
-	return user, nil
+	return user, result.Error
 }
 
 type UpdateUserInformationParams struct {

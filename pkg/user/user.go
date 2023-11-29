@@ -18,6 +18,7 @@ func (r *Router) SetupRouter() {
 	userGroup := r.router.Group("/users")
 	{
 		userGroup.POST("/create", r.createUser)
+		userGroup.GET("/:id", r.geUserById)
 	}
 }
 
@@ -28,7 +29,7 @@ func errorResponse(err error) gin.H {
 	return error
 }
 
-func errorEmail(err error) gin.H{
+func errorEmail(err error) gin.H {
 	if err != nil {
 		if pgErr, ok := err.(*pgconn.PgError); ok {
 			if pgErr.Code == "23505" && pgErr.ConstraintName == "unique_email" {
@@ -36,5 +37,5 @@ func errorEmail(err error) gin.H{
 			}
 		}
 	}
-	return gin.H{"User error": err.Error}
+	return gin.H{"User error": err.Error()}
 }
