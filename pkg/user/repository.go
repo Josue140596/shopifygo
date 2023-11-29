@@ -37,10 +37,10 @@ func (ur *UserRepository) CreateUser(arg CreateUserParams) (models.User, error) 
 
 	result := ur.db.Create(&newUser)
 	if result.Error != nil {
-		return newUser, errors.New("failed to create user: " + result.Error.Error())
+		return newUser, result.Error
 	}
 	result.Scan(&newUser)
-	return newUser, nil
+	return newUser, result.Error
 }
 
 // Get user by ID
