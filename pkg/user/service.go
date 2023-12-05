@@ -32,7 +32,7 @@ func (server *Router) createUser(c *gin.Context) {
 	_, err := server.db.CreateUser(arg)
 
 	if err != nil {
-		errorResponse(err)
+		c.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
 
